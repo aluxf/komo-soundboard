@@ -34,10 +34,22 @@ export const SoundForm = () =>{
     })
    
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
-      console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      // Send form data to the server
+      const formData = new FormData();
+      formData.append("label", values.label);
+      formData.append("file", values.file);
+  
+      const response = await fetch("/api/request-sound", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (response.ok) {
+        console.log("Request sent successfully");
+      } else {
+        console.error("Failed to send request");
+      }
     }
 
     return (
