@@ -44,7 +44,7 @@ export async function POST(req: NextRequest, context: any) {
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: "alexfooladi@hotmail.com",
+        to: process.env.EMAIL_ADMIN,
         subject: "New Sound Request",
         html: `
         <p>A new sound has been requested:</p>
