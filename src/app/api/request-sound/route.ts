@@ -49,8 +49,8 @@ export async function POST(req: NextRequest, context: any) {
         html: `
         <p>A new sound has been requested:</p>
         <p>Label: ${label}</p>
-        <p><a href="${process.env.BASE_URL}/api/accept-sound?filename=${filename}&accept=true">Accept</a></p>
-        <p><a href="${process.env.BASE_URL}/api/accept-sound?filename=${filename}&accept=false">Reject</a></p>
+        <p><a href="${process.env.BASE_URL}/api/accept-sound?filename=${filename}&label=${label}&accept=true">Accept</a></p>
+        <p><a href="${process.env.BASE_URL}/api/accept-sound?filename=${filename}&label=${label}accept=false">Reject</a></p>
         `,
     };
 
