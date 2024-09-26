@@ -1,7 +1,19 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import SoundButton from "./sound";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import { SoundForm } from "./form";
 
 export default function Home() {
   const [sounds, setSounds] = useState<{label:string, filename:string}[]>([]);
@@ -11,17 +23,42 @@ export default function Home() {
       .then((data) => setSounds(data));
   }, []);
 
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <header className="row-start-1 flex gap-6 items-end justify-center">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          Soundboard
+        </h1>
+      </header>
+      <main className="flex flex-col gap-11 row-start-2 items-center">
+        
         <div className="grid grid-cols-3 gap-4 row-start-2">
-        {sounds.map((sound, index) => (
-            <SoundButton
-              key={index}
-              label={sound.label}
-              soundSrc={`/sounds/${sound.filename}`}
-            />
-          ))}
+          {sounds.map((sound, index) => (
+              <SoundButton
+                key={index}
+                label={sound.label}
+                soundSrc={`/sounds/${sound.filename}`}
+              />
+            ))}
+        </div>
+        <div className="flex self-center">
+            <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Add Sound</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Create Sound</DialogTitle>
+              <DialogDescription>
+                Here you can request to add a new sound.
+              </DialogDescription>
+            </DialogHeader>
+              <SoundForm />
+            <DialogFooter>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
