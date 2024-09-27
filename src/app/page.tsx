@@ -28,9 +28,9 @@ export default function Home() {
   return (
     <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       
-      <main className="flex flex-col gap-20 row-start-2 items-center">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          Komo Soundboard
+      <main className="flex flex-col gap-14 row-start-2 items-center">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl self-start">
+          Komo <br/> Soundboard
         </h1>
         <div className="flex flex-col gap-8">
           <div className="grid grid-cols-2 gap-4 row-start-2">
@@ -43,11 +43,11 @@ export default function Home() {
                 ))}
             </div>
             <div className="flex self-center">
-                <Dialog>
+                <Dialog >
               <DialogTrigger asChild>
                 <Button>Add Sound</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="max-w-[80%] xxs:max-w-[375px]">
                 <DialogHeader>
                   <DialogTitle>Create Sound</DialogTitle>
                   <DialogDescription>
@@ -58,6 +58,7 @@ export default function Home() {
                 <DialogFooter>
                 </DialogFooter>
               </DialogContent>
+
             </Dialog>
             </div>
         </div>
