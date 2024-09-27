@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 const SoundButton= ({ label, soundSrc }: { label: string, soundSrc: string }) => {
   const [play] = useSound(soundSrc);
   return (
-    <Button className="overflow-hidden" onClick={() => play()} variant={"outline"}>
-        <div className="max-w-full">
+    <Button className="overflow-hidden w-32 h-10" onClick={() => play()} variant={"outline"}>
+          <div className="max-w-full">
             {label}
         </div>
     </Button>

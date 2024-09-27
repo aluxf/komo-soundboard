@@ -2,6 +2,9 @@ import nodemailer from "nodemailer";
 import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs"
+import { db, storage } from "@/app/firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -23,19 +26,16 @@ export async function POST(req: NextRequest, context: any) {
             { message: "Invalid request" },
             { status: 400 });
     }
-
-    const tempDir = path.join(process.cwd(), "public/sounds/temp") 
     const filename = label.replaceAll(" ", "_") + ".mp3"
-    const tempFilePath = path.join(tempDir, filename);
+    const storageRef = ref(storage, `sounds/${filename}`)
+    
+    const cloudFileRef = await uploadBytes(storageRef, file).then(async (snapshot) => {
+        console.log('Uploaded a blob or file!');
+        return snapshot.ref
+    });
 
-    if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    // Save the file to the temp directory
-    const fileBuffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(tempFilePath, fileBuffer);
-
+    const cloudFileUrl = await getDownloadURL(cloudFileRef);
+    const cloudFilePath = cloudFileRef.fullPath
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_ADMIN,
@@ -43,8 +43,12 @@ export async function POST(req: NextRequest, context: any) {
         html: `
         <p>A new sound has been requested:</p>
         <p>Label: ${label}</p>
-        <p><a href="${process.env.BASE_URL}/api/accept-sound?filename=${filename}&label=${label}&accept=true">Accept</a></p>
-        <p><a href="${process.env.BASE_URL}/api/accept-sound?filename=${filename}&label=${label}accept=false">Reject</a></p>
+        <p><a href="${process.env.BASE_URL}/api/accept-sound?cloudFilePath=${cloudFilePath}&label=${label}&accept=true">Accept</a></p>
+        <p><a href="${process.env.BASE_URL}/api/accept-sound?cloudFilePath=${cloudFilePath}&label=${label}accept=false">Reject</a></p>
+        </br>
+        </br>
+        <a href="${cloudFileUrl}">Listen to Sound</a>
+        <p>Do not reply to this email.</p>
         `,
     };
 
