@@ -24,7 +24,7 @@ export async function POST(req: NextRequest, context: any) {
             { status: 400 });
     }
 
-    const tempDir = "public/sounds/temp"
+    const tempDir = path.join(process.cwd(), "public/sounds/temp") 
     const filename = label.replaceAll(" ", "_") + ".mp3"
     const tempFilePath = path.join(tempDir, filename);
 

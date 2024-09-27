@@ -14,14 +14,14 @@ export async function GET(req: NextRequest) {
             { status: 400 });
     }
 
-    const tempDir = "public/sounds/temp";
-    const soundsDir = "public/sounds";
+    const tempDir = path.join(process.cwd(), "public/sounds/temp");
+    const soundsDir = path.join(process.cwd(), "public/sounds");
     const tempFilePath = path.join(tempDir, filename);
     const soundFilePath = path.join(soundsDir, filename);
 
     if (!fs.existsSync(tempFilePath)) {
         return NextResponse.json(
-            { message: "This sound request has already handled." },
+            { message: "This sound request has already been handled." },
             { status: 404 });
     }
 
