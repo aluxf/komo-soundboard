@@ -2,12 +2,6 @@ import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs"
 
-export const config = {
-    api: {
-      bodyParser: false
-    }
-}
-
 export async function GET(req: NextRequest) {
 
     const filename = req.nextUrl.searchParams.get("filename");
